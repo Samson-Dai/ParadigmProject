@@ -5,7 +5,7 @@ PlayerID, PlayerName, PlayerAge
 ----------------------------------------------
 games.csv (or games.txt):
 
-GameID, Player1ID, Player2ID, Result
+GameID, Date, Player1ID, Player2ID, Result
 ----------------------------------------------
 scores.csv
 

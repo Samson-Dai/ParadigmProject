@@ -27,4 +27,4 @@ Songcheng Dai, sdai2
 
 ## Versioning
 
-We use SemVer
+We use GitHub and SemVer

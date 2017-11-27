@@ -9,106 +9,63 @@ class TestMovieDatabase(unittest.TestCase):
         kof = _kof97_database()
 
         def reset_data(self):
-                "reset data is required because we cannot promise an order of test case execution"
-                self.kof.reset_all_data()
+            "reset data is required because we cannot promise an order of test case execution"
+            self.kof.reset_all_data()
 
         def test_get_player(self):
-                self.reset_data()
-                player = self.kof.get_player(1)
-                self.assertEqual(player['name'], 'Craig Creager')
-                self.assertEqual(player['score'], 2025)
-'''
-        def test_get_movie_null(self):
-                self.reset_data()
-                movie = self.mdb.get_movie(20000)
-                self.assertEquals(movie, None)
+            self.reset_data()
+            player = self.kof.get_player(1)
+            self.assertEqual(player['name'], 'Craig Creager')
+            self.assertEqual(player['score'], 2025)
 
-        def test_set_movie(self):
-                self.reset_data()
-                movie = self.mdb.get_movie(2)
-                movie[0] = 'ABC'
-                self.mdb.set_movie(2, movie)
-                movie = self.mdb.get_movie(2)
-                self.assertEquals(movie[0], 'ABC')
+        def test_get_game(self):
+            self.reset_data()
+            game = self.kof.get_game(1)
+            self.assertEqual(game['gameID'], 1)
+            self.assertEqual(game['date'], '2017-11-26')
+            self.assertEqual(game['player1'], 139)
+            self.assertEqual(game['score'], 25)
 
-        def test_delete_movie(self):
-                self.reset_data()
-                self.mdb.delete_movie(2)
-                movie = self.mdb.get_movie(2)
-                self.assertEquals(movie, None)
+        def test_get_highest_100(self):
+            self.reset_data()
+            best = self.kof.get_highest_100()
+            first = {'id': 88, 'name': 'Isabelle Ponce', 'score': 2149}
+            last = {'id': 8, 'name': 'Victoria Bilderback', 'score': 2049}
+            self.assertEqual(best[1], first)
+            self.assertEqual(best[100], last)
 
-        def test_get_user(self):
-                self.reset_data()
-                user = self.mdb.get_user(3)
-                self.assertEquals(user[1], 25)
-                self.assertEquals(user[2], 15)
-                self.assertEquals(user[3], '55117')
+        def test_add_player(self):
+            self.reset_data()
+            self.kof.add_player('Tong', 23)
+            player = self.kof.get_player(10001)
+            self.assertEqual(player['name'], 'Tong')
+            self.assertEqual(player['score'], 2000)
 
-        def test_set_user(self):
-                self.reset_data()
-                user = self.mdb.get_user(3)
-                user[2] = 6
-                self.mdb.set_user(3, user)
-                user = self.mdb.get_user(3)
-                self.assertEquals(user[1], 25)
-                self.assertEquals(user[2], 6)
-                self.assertEquals(user[3], '55117')
+        def test_record_game(self):
+            self.reset_data()
+            self.kof.record_game(2000, 2001, 1)
+            game = self.kof.get_game(1001)
+            self.assertEqual(game['gameID'], 1001)
+            self.assertEqual(game['player1'], 2000)
+            self.assertEqual(game['score'], 25)
+            player1 = self.kof.get_player(2000)
+            self.assertEqual(player1['score'], 2025)
+            player2 = self.kof.get_player(2001)
+            self.assertEqual(player2['score'], 1975)
 
-        def test_delete_user(self):
-                self.reset_data()
-                self.mdb.delete_user(3)
-                user = self.mdb.get_user(3)
-                self.assertEquals(user, None)
-
-        def test_get_rating(self):
-                self.reset_data()
-                rating = self.mdb.get_rating(32)
-                self.assertEquals(rating, 3.945731303772336)
-                rating = self.mdb.get_rating(110)
-                self.assertEquals(rating, 4.234957020057307)
-                rating = self.mdb.get_rating(1)
-                self.assertEquals(rating, 4.146846413095811)
-
-        def test_get_highest_rated_movie_1(self):
-                self.reset_data()
-                hrm_mid = self.mdb.get_highest_rated_movie()
-                hrm_rating = self.mdb.get_rating(hrm_mid)
-                hrm = self.mdb.get_movie(hrm_mid)
-                hrm_name = hrm[0]
-                self.assertEquals(hrm_mid, 787)
-                self.assertEquals(hrm_name, 'Gate of Heavenly Peace, The (1995)')
-                self.assertEquals(hrm_rating, 5.0)
-
-        def test_set_user_movie_rating_1(self):
-                self.reset_data()
-                self.mdb.set_user_movie_rating(41, 787, 2)
-                rating = self.mdb.get_rating(787)
-                self.assertEquals(rating, 4.25)
-
-        def test_set_user_movie_rating_2(self):
-                self.reset_data()
-                self.mdb.set_user_movie_rating(41, 787, 2)
-                self.mdb.set_user_movie_rating(101, 787, 4)
-                rating = self.mdb.get_rating(787)
-                self.assertEquals(rating, 4.2)
-
-        def test_set_and_get_movie_ratings(self):
-                self.reset_data()
-                self.mdb.set_user_movie_rating(41, 787, 2)
-                self.mdb.set_user_movie_rating(101, 787, 4)
-                hrm_mid = self.mdb.get_highest_rated_movie()
-                hrm_rating = self.mdb.get_rating(hrm_mid)
-                hrm = self.mdb.get_movie(hrm_mid)
-                hrm_name = hrm[0]
-                self.assertEquals(hrm_mid, 989)
-                self.assertEquals(hrm_name, 'Schlafes Bruder (Brother of Sleep) (1995)')
-                self.assertEquals(hrm_rating, 5.0)
-
-        def test_get_user_movie_rating(self):
-                self.reset_data()
-                rating = self.mdb.get_user_movie_rating(6030, 32)
-                self.assertEquals(rating, 5)
-'''
+        def test_write_to_files(self):
+            self.reset_data()
+            self.kof.record_game(2000, 2001, 1)
+            self.kof.write_to_files()
+            self.kof.load_files('data_saved/')
+            game = self.kof.get_game(1001)
+            self.assertEqual(game['gameID'], 1001)
+            self.assertEqual(game['player1'], 2000)
+            self.assertEqual(game['score'], 25)
+            player1 = self.kof.get_player(2000)
+            self.assertEqual(player1['score'], 2025)
+            player2 = self.kof.get_player(2001)
+            self.assertEqual(player2['score'], 1975)
 
 if __name__ == "__main__":
     unittest.main()

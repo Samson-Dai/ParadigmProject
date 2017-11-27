@@ -1,7 +1,7 @@
 #Tong Zhao, tzhao2
 #Songcheng Dai, sdai2
 import datetime
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 class _kof97_database:
 	"""A database that records a ranking system for King of Fighters '97"""
@@ -62,7 +62,7 @@ class _kof97_database:
 		file.close()
 		
 	def get_player(self, playerID):
-		"""Returns the ranking score of a player"""
+		"""Returns the information and score of a player"""
 		if playerID in self.scores:
 			output = dict()
 			output['id'] = int(playerID)
@@ -92,7 +92,7 @@ class _kof97_database:
 		sortedscores = list(sorted(self.scores, key = self.scores.__getitem__, reverse = True))
 		for i in range(100):
 			rank = i + 1
-			best100[rank] = self.get_score(sortedscores[i])
+			best100[rank] = self.get_player(sortedscores[i])
 		return best100
 
 	def add_player(self, name, age):

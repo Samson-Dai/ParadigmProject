@@ -127,3 +127,4 @@ if __name__ == '__main__':
 	#kof.write_to_files()
 	#print(kof.get_game(1), kof.get_score(20))
 	#print(kof.players)
+	pass

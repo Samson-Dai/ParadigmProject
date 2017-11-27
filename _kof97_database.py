@@ -22,7 +22,6 @@ class _kof97_database:
 		file = open(filePath + 'games.csv')
 		for line in file:
 			m = line.split(",")
-			#self.games[int(m[0])] = [m[1], int(m[2]), int(m[3]), int(m(4))]
 			self.games[int(m[0])] = [m[1], int(m[2]), int(m[3]), int(m[4])]
 
 		self.scores = dict()
@@ -39,7 +38,25 @@ class _kof97_database:
 
 	def write_to_files(self):
 		"""Write all data to the files in data_saved/ so that we can access them next time"""
-		pass
+		path = 'data_saved/'
+		f = open(path + 'players.csv','w')
+		for key in self.players:
+			f.write("{},{},{}\n".format(key, self.players[key][0], self.players[key][1]))
+		f.close()
+
+		f = open(path + 'games.csv','w')
+		for key in self.games:
+			f.write("{},{},{},{},{}\n".format(key, 
+											  self.games[key][0], 
+											  self.games[key][1], 
+											  self.games[key][2], 
+											  self.games[key][3]))
+		f.close()
+
+		f = open(path + 'scores.csv','w')
+		for key in self.scores:
+			f.write("{},{}\n".format(key, self.scores[key]))
+		f.close()
 		
 	def get_score(self, playerID):
 		"""Returns the ranking score of a player"""
@@ -99,13 +116,14 @@ class _kof97_database:
 		if diff < -10:
 			diff = -10
 		if winner == 1:
-			return 25 + diff
+			return 25 - diff
 		else:
-			return -25 + diff
+			return -25 - diff
 
 if __name__ == '__main__':
 	kof = _kof97_database()
-	kof.load_files('data_original/')
+	kof.reset_all_data()
 	kof.record_game(10, 2000, 1)
+	kof.write_to_files()
 	#print(kof.get_game(1), kof.get_score(20))
-	print(kof.get_highest_100())
+	#print(kof.players)

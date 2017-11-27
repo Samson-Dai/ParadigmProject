@@ -34,8 +34,9 @@ class _kof97_database:
 		file.close()
 
 	def reset_all_data(self):
-		"""Reset all data to the original data, which contains no game records 
-		and all players have score of 2000
+		"""Reset all data to the original data. 
+		
+		The original data contains 10000 players and 1000 games.
 		"""
 		self.load_files('data_original/')
 
@@ -86,7 +87,7 @@ class _kof97_database:
 			return None
 
 	def get_highest_100(self):
-		"""Returns the info and score of best 100 players"""
+		"""Returns the information and score of best 100 players"""
 		sortedscores = list()
 		best100 = dict()
 		sortedscores = list(sorted(self.scores, key = self.scores.__getitem__, reverse = True))
@@ -96,7 +97,7 @@ class _kof97_database:
 		return best100
 
 	def add_player(self, name, age):
-		"""Add a new player to the database"""
+		"""Add a new player to the database and set default ranking score of 2000"""
 		playerID = 1
 		if len(self.players.keys()) > 0:
 			playerID = max(self.players.keys()) + 1
@@ -104,7 +105,11 @@ class _kof97_database:
 		self.scores[playerID] = 2000
 
 	def record_game(self, player1ID, player2ID, winner):
-		"""Record a game and change the scores of two players accroding to the game result"""
+		"""Record a game and change the scores of two players accroding to the game result.
+		
+		A record will be saved to self.games and the ranking scores of the two players 
+		will be updated.
+		"""
 		if player1ID in self.scores and player2ID in self.scores:
 			now = datetime.datetime.now()
 			score = self.cal_score(player1ID, player2ID, winner)
@@ -118,7 +123,15 @@ class _kof97_database:
 			return None
 
 	def cal_score(self, player1ID, player2ID, winner):
-		"""Calculate the score change of this game"""
+		"""A helper function that calculate the score change of this game.
+
+		When the ranking score of winner is higher than the ranking score of loser,
+			the result score will be smaller according to the difference of their
+			ranking score.
+		When the ranking score of winner is lower than the ranking score of loser,
+			the result score will be larger according to the difference of their
+			ranking score.
+		"""
 		score1 = self.scores[player1ID]
 		score2 = self.scores[player2ID]
 		diff = int((score1 - score2) / 100)

@@ -121,9 +121,9 @@ class _kof97_database:
 			return -25 - diff
 
 if __name__ == '__main__':
-	kof = _kof97_database()
-	kof.reset_all_data()
-	kof.record_game(10, 2000, 1)
-	kof.write_to_files()
+	#kof = _kof97_database()
+	#kof.reset_all_data()
+	#kof.record_game(10, 2000, 1)
+	#kof.write_to_files()
 	#print(kof.get_game(1), kof.get_score(20))
 	#print(kof.players)

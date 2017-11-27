@@ -1,7 +1,7 @@
 #Tong Zhao, tzhao2
 #Songcheng Dai, sdai2
 import datetime
-
+__version__ = '1.0.0'
 
 class _kof97_database:
 	"""A database that records a ranking system for King of Fighters '97"""
@@ -17,18 +17,21 @@ class _kof97_database:
 		for line in file:
 			m = line.split(",")
 			self.players[int(m[0])] = [m[1], int(m[2])]
+		file.close()
 
 		self.games = dict()
 		file = open(filePath + 'games.csv')
 		for line in file:
 			m = line.split(",")
 			self.games[int(m[0])] = [m[1], int(m[2]), int(m[3]), int(m[4])]
+		file.close()
 
 		self.scores = dict()
 		file = open(filePath + 'scores.csv')
 		for line in file:
 			m = line.split(",")
 			self.scores[int(m[0])] = int(m[1])
+		file.close()
 
 	def reset_all_data(self):
 		"""Reset all data to the original data, which contains no game records 
@@ -39,26 +42,26 @@ class _kof97_database:
 	def write_to_files(self):
 		"""Write all data to the files in data_saved/ so that we can access them next time"""
 		path = 'data_saved/'
-		f = open(path + 'players.csv','w')
+		file = open(path + 'players.csv','w')
 		for key in self.players:
-			f.write("{},{},{}\n".format(key, self.players[key][0], self.players[key][1]))
-		f.close()
+			file.write("{},{},{}\n".format(key, self.players[key][0], self.players[key][1]))
+		file.close()
 
-		f = open(path + 'games.csv','w')
+		file = open(path + 'games.csv','w')
 		for key in self.games:
-			f.write("{},{},{},{},{}\n".format(key, 
+			file.write("{},{},{},{},{}\n".format(key, 
 											  self.games[key][0], 
 											  self.games[key][1], 
 											  self.games[key][2], 
 											  self.games[key][3]))
-		f.close()
+		file.close()
 
-		f = open(path + 'scores.csv','w')
+		file = open(path + 'scores.csv','w')
 		for key in self.scores:
-			f.write("{},{}\n".format(key, self.scores[key]))
-		f.close()
+			file.write("{},{}\n".format(key, self.scores[key]))
+		file.close()
 		
-	def get_score(self, playerID):
+	def get_player(self, playerID):
 		"""Returns the ranking score of a player"""
 		if playerID in self.scores:
 			output = dict()
@@ -70,6 +73,7 @@ class _kof97_database:
 			return None
 
 	def get_game(self, gameID):
+		"""Returns the game record according to the given game ID"""
 		if gameID in self.games:
 			output = dict()
 			output['gameID'] = int(gameID)
@@ -91,15 +95,22 @@ class _kof97_database:
 			best100[rank] = self.get_score(sortedscores[i])
 		return best100
 
+	def add_player(self, name, age):
+		"""Add a new player to the database"""
+		playerID = 1
+		if len(self.players.keys()) > 0:
+			playerID = max(self.players.keys()) + 1
+		self.players[playerID] = [name, int(age)]
+		self.scores[playerID] = 2000
+
 	def record_game(self, player1ID, player2ID, winner):
 		"""Record a game and change the scores of two players accroding to the game result"""
 		if player1ID in self.scores and player2ID in self.scores:
 			now = datetime.datetime.now()
 			score = self.cal_score(player1ID, player2ID, winner)
+			gameID = 1
 			if len(self.games.keys()) > 0:
 				gameID = max(self.games.keys()) + 1
-			else:
-				gameID = 1
 			self.games[gameID] = [str(now)[:10], player1ID, player2ID, score]
 			self.scores[player1ID] = self.scores[player1ID] + score
 			self.scores[player2ID] = self.scores[player2ID] - score
@@ -121,10 +132,4 @@ class _kof97_database:
 			return -25 - diff
 
 if __name__ == '__main__':
-	#kof = _kof97_database()
-	#kof.reset_all_data()
-	#kof.record_game(10, 2000, 1)
-	#kof.write_to_files()
-	#print(kof.get_game(1), kof.get_score(20))
-	#print(kof.players)
 	pass

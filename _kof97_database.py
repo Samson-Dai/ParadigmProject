@@ -1,7 +1,7 @@
 #Tong Zhao, tzhao2
 #Songcheng Dai, sdai2
 import datetime
-__version__ = '1.0.1'
+__version__ = '1.1.0'
 
 class _kof97_database:
 	"""A database that records a ranking system for King of Fighters '97"""
@@ -62,6 +62,20 @@ class _kof97_database:
 			file.write("{},{}\n".format(key, self.scores[key]))
 		file.close()
 		
+	def get_all_players(self):
+		"""Returns a list of all players with their information and score"""
+		output = list()
+		for playerID in self.players:
+			output.append(self.get_player(playerID))
+		return output
+
+	def get_all_games(self):
+		"""Returns a list of all games"""
+		output = list()
+		for gameID in self.games:
+			output.append(self.get_game(gameID))
+		return output
+
 	def get_player(self, playerID):
 		"""Returns the information and score of a player"""
 		if playerID in self.scores:
@@ -105,7 +119,7 @@ class _kof97_database:
 		self.scores[playerID] = 2000
 
 	def record_game(self, player1ID, player2ID, winner):
-		"""Record a game and change the scores of two players accroding to the game result.
+		"""Record a game and change the scores of two players according to the game result.
 		
 		A record will be saved to self.games and the ranking scores of the two players 
 		will be updated.
@@ -119,6 +133,7 @@ class _kof97_database:
 			self.games[gameID] = [str(now)[:10], player1ID, player2ID, score]
 			self.scores[player1ID] = self.scores[player1ID] + score
 			self.scores[player2ID] = self.scores[player2ID] - score
+			return gameID
 		else:
 			return None
 
@@ -143,6 +158,18 @@ class _kof97_database:
 			return 25 - diff
 		else:
 			return -25 - diff
+
+	def delete_game(self, gameID):
+		"""If this game does exist, delete this game record 
+		and change the corresponding ranking scores"""
+		if gameID in self.games:
+			player1ID = self.games[gameID][1]
+			player2ID = self.games[gameID][2]
+			scoreChange = self.games[gameID][3]
+			del self.games[gameID]
+			self.scores[player1ID] = self.scores[player1ID] - scoreChange
+			self.scores[player2ID] = self.scores[player2ID] + scoreChange
+
 
 if __name__ == '__main__':
 	pass

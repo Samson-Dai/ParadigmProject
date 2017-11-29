@@ -117,6 +117,7 @@ class _kof97_database:
 			playerID = max(self.players.keys()) + 1
 		self.players[playerID] = [name, int(age)]
 		self.scores[playerID] = 2000
+		return playerID
 
 	def record_game(self, player1ID, player2ID, winner):
 		"""Record a game and change the scores of two players according to the game result.

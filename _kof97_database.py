@@ -1,7 +1,7 @@
 #Tong Zhao, tzhao2
 #Songcheng Dai, sdai2
 import datetime
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 class _kof97_database:
 	"""A database that records a ranking system for King of Fighters '97"""

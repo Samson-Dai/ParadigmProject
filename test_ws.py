@@ -21,7 +21,7 @@ class TestReset(unittest.TestCase):
         except ValueError:
             return False
 
-    def test_movies_index_get(self):
+    def test_get_all_players(self):
         """Testing get all players"""
         self.reset_data()
         r = requests.get(self.PLAYERS_URL)
@@ -35,6 +35,18 @@ class TestReset(unittest.TestCase):
 
         self.assertEqual(testplayer['name'], 'Karen Washington')
         self.assertEqual(testplayer['age'], 75)
+        self.assertEqual(testplayer['score'], 2000)
+
+    def test_get_player(self):
+        self.reset_data()
+        player_id = 10
+        r = requests.get(self.PLAYERS_URL + str(player_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+
+        self.assertEqual(resp['name'], 'Karen Washington')
+        self.assertEqual(resp['age'], 75)
+        self.assertEqual(resp['score'], 2000)
 
 if __name__ == "__main__":
     unittest.main()

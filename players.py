@@ -30,7 +30,7 @@ class PlayersController(object):
                 output['result'] = 'error'
         except KeyError as ex:
             output['result'] = 'error'
-            output['message'] = 'cannot be post'
+            output['message'] = ex
         return json.dumps(output)
 
 
@@ -38,12 +38,12 @@ class PlayersController(object):
         output = {'result':'success'}
         try:
             uid = int(uid)
-            if uid in self.mdb.players:
-                output['id'] = uid
-                user_info = self.mdb.get_player(uid)
+            output['id'] = uid
+            user_info = self.mdb.get_player(uid)
+            if user_info != None:
                 output = dict(output.items() + user_info.items())
             else:
-                output = {'result':'error'}
+                output['result'] = 'error'
         except KeyError as ex:
             output['result'] = 'error'
             output['message'] = ex

@@ -33,7 +33,6 @@ class PlayersController(object):
             output['message'] = ex
         return json.dumps(output)
 
-
     def GET_A_PLAYER(self,uid):
         output = {'result':'success'}
         try:

@@ -24,8 +24,7 @@ class GamesController(object):
             player1 = body_input["player1"]
             player2 = body_input["player2"]
             result = body_input["result"]
-            self.mdb.games[gid] = a_user
-            gameID = record_game(player1,player2,result)
+            gameID = self.mdb.record_game(player1,player2,result)
             if (gameID):
                 output["gameID"] = gameID
             else:
@@ -40,9 +39,13 @@ class GamesController(object):
         output = {'result':'success'}
         try:
             gid = int(gid)
+            output['gameID'] = gid
             if gid in self.mdb.games:
                 game_info = self.mdb.get_game(gid)
-                output = dict(output.items() + game_info.items())
+                output['date'] = game_info['date']
+                output['player1'] = game_info['player1']
+                output['player2'] = game_info['player2']
+                output['score'] = game_info['score']
             else:
                 output = {'result':'error'}
         except KeyError as ex:

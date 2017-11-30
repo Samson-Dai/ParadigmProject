@@ -23,7 +23,7 @@ class PlayersController(object):
         try:
             name =  body_input["name"],
             age =  body_input["age"]
-            uid = self.mdb.players.add_player(name,age)
+            uid = self.mdb.add_player(name,age)
             if (uid):
                 output["id"] = uid
             else:
@@ -41,7 +41,9 @@ class PlayersController(object):
             output['id'] = uid
             user_info = self.mdb.get_player(uid)
             if user_info != None:
-                output = dict(output.items() + user_info.items())
+                output['name'] = user_info['name']
+                output['age'] = user_info['age']
+                output ['score'] = user_info['score']
             else:
                 output['result'] = 'error'
         except KeyError as ex:

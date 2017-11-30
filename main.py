@@ -4,18 +4,18 @@ from reset import ResetController
 from save import SaveController
 from load_saved import LoadController
 from rank import RankController
-from players import PlayerController
+from players import PlayersController
 from games import GamesController
 from _kof97_database import _kof97_database
 
 def start_service():
-    mdb = _kof97_database()
-    resetController = ResetController(mdb)
-    saveController = SaveController(mdb)
-    loadController = LoadController(mdb)
-    rankController = RankController(mdb)
-    playersController = PlyersController(mdb)
-    gamesController = GamesController(mdb)
+    kof = _kof97_database()
+    resetController = ResetController(kof)
+    saveController = SaveController(kof)
+    loadController = LoadController(kof)
+    rankController = RankController(kof)
+    playersController = PlayersController(kof)
+    gamesController = GamesController(kof)
 
     dispatcher = cherrypy.dispatch.RoutesDispatcher()
     

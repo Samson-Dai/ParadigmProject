@@ -174,4 +174,8 @@ class _kof97_database:
 
 
 if __name__ == '__main__':
+	kof = _kof97_database()
+	kof.reset_all_data()
+	kof.add_player("tong", 23)
+	kof.write_to_files()
 	pass

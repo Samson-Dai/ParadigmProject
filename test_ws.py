@@ -49,6 +49,27 @@ class TestReset(unittest.TestCase):
         self.assertEqual(resp['age'], 75)
         self.assertEqual(resp['score'], 2000)
 
+    def test_post_player(self):
+        """testing of registering a player to the database"""
+        self.reset_data()
+        m = {}
+        m['name'] = 'Tong'
+        m['age'] = 23
+        r = requests.post(self.PLAYERS_URL, data = json.dumps(m))
+        self.assertTrue(self.is_json(r.content.decode()))
+        resp = json.loads(r.content.decode())
+        self.assertEqual(resp['result'], 'success')
+        player_id = resp['id']
+
+        r = requests.get(self.PLAYERS_URL + str(player_id))
+        self.assertTrue(self.is_json(r.content.decode()))
+        resp = json.loads(r.content.decode())
+
+        self.assertEqual(resp['name'], 'Tong')
+        self.assertEqual(resp['age'], 23)
+        self.assertEqual(resp['score'], 2000)
+
+
 if __name__ == "__main__":
     unittest.main()
 

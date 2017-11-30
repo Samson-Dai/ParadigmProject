@@ -21,9 +21,9 @@ class PlayersController(object):
         body_input = cherrypy.request.body.read().decode('utf8')  # Use decode to convert into string 
         body_input = json.loads(body_input)
         try:
-            name =  body_input['name'][0],
+            name =  body_input['name'],
             age =  body_input['age']
-            uid = self.mdb.add_player(name, age)
+            uid = self.mdb.add_player(str(name), age)
             if (uid):
                 output["id"] = uid
             else:

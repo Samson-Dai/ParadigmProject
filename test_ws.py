@@ -38,11 +38,12 @@ class TestReset(unittest.TestCase):
         self.assertEqual(testplayer['score'], 2000)
 
     def test_get_player(self):
+        """Testing get a single players"""
         self.reset_data()
         player_id = 10
         r = requests.get(self.PLAYERS_URL + str(player_id))
-        self.assertTrue(self.is_json(r.content.decode('utf-8')))
-        resp = json.loads(r.content.decode('utf-8'))
+        self.assertTrue(self.is_json(r.content.decode()))
+        resp = json.loads(r.content.decode())
 
         self.assertEqual(resp['name'], 'Karen Washington')
         self.assertEqual(resp['age'], 75)

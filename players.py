@@ -23,7 +23,7 @@ class PlayersController(object):
         try:
             name =  body_input['name'],
             age =  body_input['age']
-            uid = self.mdb.add_player(str(name), age)
+            uid = self.mdb.add_player(name, age)
             if (uid):
                 output["id"] = uid
             else:

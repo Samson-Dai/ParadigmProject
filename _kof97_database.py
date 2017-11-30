@@ -82,6 +82,7 @@ class _kof97_database:
 			output = dict()
 			output['id'] = int(playerID)
 			output['name'] = self.players[playerID][0]
+			output['age'] = self.players[playerID][1]
 			output['score'] = self.scores[playerID]
 			return output
 		else:

@@ -9,6 +9,7 @@ class TestReset(unittest.TestCase):
     SITE_URL = 'http://student04.cse.nd.edu:' + PORT_NUM
     RESET_URL = SITE_URL + '/reset/'
     PLAYERS_URL = SITE_URL + '/players/'
+    GAMES_URL = SITE_URL + '/games/'
 
     def reset_data(self):
         m = {}
@@ -68,6 +69,22 @@ class TestReset(unittest.TestCase):
         self.assertEqual(resp['name'], 'Tong')
         self.assertEqual(resp['age'], 23)
         self.assertEqual(resp['score'], 2000)
+
+    def test_get_all_games(self):
+        """Testing get all games"""
+        self.reset_data()
+        r = requests.get(self.GAMES_URL)
+        self.assertTrue(self.is_json(r.content.decode()))
+        resp = json.loads(r.content.decode())
+
+        games = resp['games']
+        for game in games:
+            if game['gameID'] == 10:
+                testgame = game
+
+        self.assertEqual(testgame['player1'], 363)
+        self.assertEqual(testgame['player2'], 250)
+        self.assertEqual(testgame['score'], -25)
 
 
 if __name__ == "__main__":

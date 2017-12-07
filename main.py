@@ -99,7 +99,9 @@ def start_service():
             'server.socket_host':'student04.cse.nd.edu',
             'server.socket_port': 51024
         },
-        '/':{'request.dispatch': dispatcher}
+        '/':{'request.dispatch': dispatcher,
+             'tools.CORS.on': True
+        }
     }
 
     #starting the server

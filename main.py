@@ -8,6 +8,11 @@ from players import PlayersController
 from games import GamesController
 from _kof97_database import _kof97_database
 
+def CORS():
+    cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
+    cherrypy.response.headers["Access-Control-Allow-Methods"] = "GET, PUT, POST, DELETE"
+    cherrypy.response.headers["Access-Control-Allow-Credentials"] = "*"
+
 def start_service():
     kof = _kof97_database()
     resetController = ResetController(kof)
@@ -104,4 +109,5 @@ def start_service():
 
 
 if __name__ == '__main__':
+    cherrypy.tools.CORS = cherrypy.Tool('before_finalize', CORS)
     start_service()

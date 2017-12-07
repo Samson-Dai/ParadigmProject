@@ -91,6 +91,12 @@ def start_service():
         action = 'DELETE_A_GAME',
         conditions = dict(method=['DELETE'])
     )
+    dispatcher.connect('options',
+        '/games/:gid',
+        controller = gamesController ,
+        action = 'OPTIONS',
+        conditions = dict(method=['OPTIONS'])
+    )
 
 
     #cofiguration for server

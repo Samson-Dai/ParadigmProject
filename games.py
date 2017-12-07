@@ -62,3 +62,6 @@ class GamesController(object):
             output['result'] = 'error'
             output['message'] = ex
         return json.dumps(output)
+
+    def OPTIONS(self, *args, **kargs):
+        return ""

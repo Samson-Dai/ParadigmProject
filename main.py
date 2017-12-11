@@ -22,6 +22,8 @@ def start_service():
     playersController = PlayersController(kof)
     gamesController = GamesController(kof)
 
+    resetController.RESET()
+
     dispatcher = cherrypy.dispatch.RoutesDispatcher()
     
     # do connection here

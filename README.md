@@ -19,6 +19,8 @@ PlayerID, RankingScore
 
 Note: in game.csv, Result is a integer that saves the score change of the two players. After this game is recorded, player1 will add this number to his ranking score and player2 will subtract this number to his ranking score.
 
+## How to run
+Go to final_project/webservice and run the server by "python3 main.py". Then go to "http://student04.cse.nd.edu/sdai2/final/Kof97Frontend/2-blocks-template/" to test the client.
 
 ## Authors
 
